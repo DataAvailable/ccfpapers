@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="CCF A 类会议与期刊论文导航，按计算机领域方向、年份、 venue 和论文元数据浏览。"
+    />
+    <title>CCF A Papers</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <nav class="nav">
+        <a class="brand" href="#">
+          <span class="brand-mark"></span>
+          <span>CCF A Papers</span>
+        </a>
+        <div class="nav-actions">
+          <a href="#papers">论文</a>
+          <a href="#venues">会议/期刊</a>
+          <a href="https://dblp.org/" target="_blank" rel="noreferrer">DBLP</a>
+        </div>
+      </nav>
+
+      <section class="hero">
+        <div class="hero-copy">
+          <p class="eyebrow">CCF 2022 第六版目录 · DBLP 增量数据基础</p>
+          <h1>面向计算机领域 A 类论文的轻量级导航站</h1>
+          <p>
+            按十大方向聚合 CCF A 类会议与期刊，支持年份、类型、方向和关键词筛选。
+            第一版先展示完整信息架构与少量 DBLP 示例数据，后续可通过脚本按年份增量更新。
+          </p>
+        </div>
+        <div class="hero-panel" aria-label="数据概览">
+          <div>
+            <strong id="stat-directions">10</strong>
+            <span>研究方向</span>
+          </div>
+          <div>
+            <strong id="stat-venues">0</strong>
+            <span>A 类会议/期刊</span>
+          </div>
+          <div>
+            <strong id="stat-papers">0</strong>
+            <span>已收录论文</span>
+          </div>
+        </div>
+      </section>
+    </header>
+
+    <main>
+      <section class="control-band" aria-label="筛选器">
+        <div class="search-box">
+          <label for="query">搜索论文、作者、机构或 venue</label>
+          <input id="query" type="search" placeholder="例如 CCS、fuzzing、TIFS、作者名" />
+        </div>
+        <div class="filter-row">
+          <label>
+            年份
+            <select id="year-filter"></select>
+          </label>
+          <label>
+            类型
+            <select id="type-filter">
+              <option value="all">全部</option>
+              <option value="conference">会议</option>
+              <option value="journal">期刊</option>
+            </select>
+          </label>
+          <label>
+            数据状态
+            <select id="status-filter">
+              <option value="all">全部</option>
+              <option value="dblp">DBLP</option>
+              <option value="enriched">已补全</option>
+              <option value="pending">待补全</option>
+            </select>
+          </label>
+        </div>
+      </section>
+
+      <section class="layout">
+        <aside class="direction-rail" aria-label="计算机领域十大方向">
+          <div class="section-heading">
+            <p>Directions</p>
+            <h2>十大方向</h2>
+          </div>
+          <div id="direction-list" class="direction-list"></div>
+        </aside>
+
+        <div class="content">
+          <section id="venues" class="venue-section">
+            <div class="section-heading">
+              <p>Venues</p>
+              <h2 id="direction-title">全部方向</h2>
+            </div>
+            <div id="venue-summary" class="summary-line"></div>
+            <div id="venue-grid" class="venue-grid"></div>
+          </section>
+
+          <section id="papers" class="paper-section">
+            <div class="section-heading">
+              <p>Papers</p>
+              <h2>论文列表</h2>
+            </div>
+            <div id="paper-list" class="paper-list"></div>
+          </section>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <span>数据源：CCF 推荐目录与 DBLP。</span>
+      <span>摘要、机构字段预留为二次数据源补全。</span>
+    </footer>
+
+    <script src="app.js" defer></script>
+  </body>
+</html>
