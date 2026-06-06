@@ -200,7 +200,7 @@ select {
 
 .filter-row {
   display: grid;
-  grid-template-columns: 110px 120px 130px;
+  grid-template-columns: 110px 120px 130px 160px;
   gap: 12px;
 }
 
@@ -443,6 +443,92 @@ select {
   color: var(--blue);
 }
 
+.paper-rating {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 14px;
+  padding: 12px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: #fbfdfc;
+}
+
+.rating-summary {
+  display: grid;
+  gap: 4px;
+  min-width: 150px;
+}
+
+.rating-global {
+  color: var(--ink);
+  font-size: 13px;
+  font-weight: 780;
+  white-space: nowrap;
+}
+
+.rating-global.hot {
+  color: #b42318;
+}
+
+.rating-current {
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 720;
+  white-space: nowrap;
+}
+
+.rating-controls {
+  display: grid;
+  justify-items: end;
+  gap: 8px;
+}
+
+.rating-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.rating-button {
+  min-width: 46px;
+  min-height: 34px;
+  padding: 0 10px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: #fff;
+  color: var(--ink);
+  font: inherit;
+  font-size: 12px;
+  font-weight: 760;
+  cursor: pointer;
+}
+
+.rating-button:hover,
+.rating-button.active {
+  border-color: rgba(193, 138, 33, 0.58);
+  background: #f8efd9;
+  color: #7b5514;
+}
+
+.rating-custom {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 720;
+}
+
+.rating-input {
+  width: 72px;
+  min-height: 34px;
+  padding: 0 8px;
+  font-size: 13px;
+}
+
 .paper-card p {
   margin: 8px 0;
   color: var(--muted);
@@ -518,7 +604,7 @@ footer {
   }
 
   .filter-row {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 
@@ -541,6 +627,19 @@ footer {
   .paper-section,
   .direction-rail {
     padding: 18px;
+  }
+
+  .paper-rating {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .rating-controls {
+    justify-items: start;
+  }
+
+  .rating-buttons {
+    justify-content: flex-start;
   }
 
   .pagination {

@@ -5,10 +5,13 @@ const state = {
   type: "all",
   status: "all",
   query: "",
+  sort: "default",
   page: 1,
   pageSize: 50,
   catalog: null,
   papers: [],
+  ratings: {},
+  globalRatings: {},
 };
 
 const els = {
@@ -22,10 +25,118 @@ const els = {
   year: document.querySelector("#year-filter"),
   type: document.querySelector("#type-filter"),
   status: document.querySelector("#status-filter"),
+  sort: document.querySelector("#sort-filter"),
   statDirections: document.querySelector("#stat-directions"),
   statVenues: document.querySelector("#stat-venues"),
   statPapers: document.querySelector("#stat-papers"),
 };
+
+const RATING_STORAGE_KEY = "ccf-a-paper-ratings";
+const SHARED_RATING_ENDPOINT = typeof window !== "undefined" ? window.CCF_RATING_API_URL : "";
+const RATING_OPTIONS = [5, 4, 3, 2, 1, 0];
+
+function loadRatings() {
+  try {
+    return JSON.parse(localStorage.getItem(RATING_STORAGE_KEY) || "{}");
+  } catch (error) {
+    console.warn("Cannot load ratings", error);
+    return {};
+  }
+}
+
+function saveRatings() {
+  try {
+    localStorage.setItem(RATING_STORAGE_KEY, JSON.stringify(state.ratings));
+  } catch (error) {
+    console.warn("Cannot save ratings", error);
+  }
+}
+
+function hasRating(paperId) {
+  return Object.prototype.hasOwnProperty.call(state.ratings, paperId);
+}
+
+function paperScore(paper) {
+  return hasRating(paper.id) ? Number(state.ratings[paper.id]) : null;
+}
+
+function formatScore(score) {
+  return Number.isInteger(score) ? String(score) : score.toFixed(1);
+}
+
+function ratingText(score) {
+  return score === null ? "未评分" : formatScore(score) + " 分";
+}
+
+function normalizeScore(value) {
+  const score = Number(value);
+  if (!Number.isFinite(score)) {
+    return null;
+  }
+  return Math.min(5, Math.max(0, Math.round(score * 10) / 10));
+}
+
+function normalizeGlobalRatings(payload) {
+  const source = payload?.ratings ?? payload ?? {};
+  return Object.fromEntries(
+    Object.entries(source).map(([paperId, value]) => {
+      const count = Math.max(0, Number(value.count ?? 0));
+      const total = Number(value.total ?? 0);
+      const average = count ? Number(value.average ?? total / count) : null;
+      return [paperId, { total, count, average }];
+    }),
+  );
+}
+
+function globalRatingStats(paperId) {
+  const stats = state.globalRatings[paperId];
+  if (!stats || !stats.count) {
+    return { total: 0, count: 0, average: null };
+  }
+  return stats;
+}
+
+function globalRatingText(paperId) {
+  const stats = globalRatingStats(paperId);
+  if (!stats.count) {
+    return "暂无";
+  }
+  return stats.average.toFixed(1) + " 分 / " + stats.count + " 人";
+}
+
+function globalRatingClass(paperId) {
+  const average = globalRatingStats(paperId).average;
+  return average !== null && average > 3 ? "rating-global hot" : "rating-global";
+}
+
+function applyLocalRatingToGlobal(paperId, score, previousScore) {
+  const stats = globalRatingStats(paperId);
+  const nextCount = previousScore === null ? stats.count + 1 : stats.count;
+  const nextTotal = stats.total + score - (previousScore ?? 0);
+  state.globalRatings[paperId] = {
+    total: nextTotal,
+    count: nextCount,
+    average: nextCount ? nextTotal / nextCount : null,
+  };
+}
+
+async function submitSharedRating(paperId, score) {
+  if (!SHARED_RATING_ENDPOINT) {
+    return;
+  }
+  try {
+    const response = await fetch(SHARED_RATING_ENDPOINT, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ paperId, score }),
+    });
+    if (!response.ok) {
+      throw new Error(`Rating API returned ${response.status}`);
+    }
+  } catch (error) {
+    console.warn("Cannot submit shared rating", error);
+  }
+}
 
 async function loadJson(path) {
   const response = await fetch(path);
@@ -35,14 +146,26 @@ async function loadJson(path) {
   return response.json();
 }
 
+async function loadOptionalJson(path, fallback) {
+  try {
+    return await loadJson(path);
+  } catch (error) {
+    console.warn(`Cannot load optional ${path}`, error);
+    return fallback;
+  }
+}
+
 async function boot() {
   try {
-    const [catalog, ...paperYears] = await Promise.all([
+    const [catalog, globalRatingPayload, ...paperYears] = await Promise.all([
       loadJson("data/ccf-a-venues.json"),
+      loadOptionalJson("data/paper-ratings.json", { ratings: {} }),
       ...[2023, 2024, 2025, 2026].map((year) => loadJson("data/papers/" + year + ".json")),
     ]);
     state.catalog = catalog;
     state.papers = paperYears.flatMap((payload) => payload.papers);
+    state.ratings = loadRatings();
+    state.globalRatings = normalizeGlobalRatings(globalRatingPayload);
     hydrateFilters();
     bindEvents();
     render();
@@ -83,6 +206,11 @@ function bindEvents() {
   });
   els.status.addEventListener("change", (event) => {
     state.status = event.target.value;
+    state.page = 1;
+    renderPapers();
+  });
+  els.sort.addEventListener("change", (event) => {
+    state.sort = event.target.value;
     state.page = 1;
     renderPapers();
   });
@@ -206,13 +334,114 @@ function filteredPapers() {
   const venueMap = new Map(venues().map((venue) => [venue.id, venue]));
   const visibleVenueIds = new Set(filteredVenues().map((venue) => venue.id));
 
-  return state.papers.filter((paper) => {
+  const filtered = state.papers.filter((paper) => {
     const venue = venueMap.get(paper.venueId);
     const inVisibleVenue = visibleVenueIds.has(paper.venueId);
     const venueMatch = state.venue === "all" || paper.venueId === state.venue;
     const yearMatch = state.year === "all" || String(paper.year) === state.year;
     const statusMatch = state.status === "all" || paper.metadataStatus === state.status;
     return inVisibleVenue && venueMatch && yearMatch && statusMatch && paperMatchesQuery(paper, venue);
+  });
+
+  return sortPapers(filtered);
+}
+
+function sortPapers(papers) {
+  if (state.sort === "score-desc" || state.sort === "score-asc") {
+    const direction = state.sort === "score-desc" ? -1 : 1;
+    return [...papers].sort((left, right) => {
+      const leftScore = globalRatingStats(left.id).average;
+      const rightScore = globalRatingStats(right.id).average;
+      if (leftScore === null && rightScore === null) {
+        return 0;
+      }
+      if (leftScore === null) {
+        return 1;
+      }
+      if (rightScore === null) {
+        return -1;
+      }
+      if (leftScore !== rightScore) {
+        return (leftScore - rightScore) * direction;
+      }
+      return String(left.title).localeCompare(String(right.title));
+    });
+  }
+  return papers;
+}
+
+function renderRatingControls(paper) {
+  const score = paperScore(paper);
+  const currentRating = score === null ? "" : "<div class=\"rating-current\">我的评分：" + ratingText(score) + "</div>";
+  const buttons = RATING_OPTIONS.map((option) => {
+    const activeClass = score === option ? " active" : "";
+    return (
+      "<button class=\"rating-button" +
+      activeClass +
+      "\" data-paper-id=\"" +
+      paper.id +
+      "\" data-score=\"" +
+      option +
+      "\">" +
+      option +
+      "</button>"
+    );
+  }).join("");
+
+  return (
+    "<div class=\"paper-rating\">" +
+    "<div class=\"rating-summary\">" +
+    "<div class=\"" +
+    globalRatingClass(paper.id) +
+    "\">评分：" +
+    globalRatingText(paper.id) +
+    "</div>" +
+    currentRating +
+    "</div>" +
+    "<div class=\"rating-controls\">" +
+    "<div class=\"rating-buttons\">" +
+    buttons +
+    "</div>" +
+    "<label class=\"rating-custom\">自定义" +
+    "<input class=\"rating-input\" type=\"number\" min=\"0\" max=\"5\" step=\"0.1\" value=\"" +
+    (score === null ? "" : formatScore(score)) +
+    "\" data-paper-id=\"" +
+    paper.id +
+    "\" placeholder=\"0-5\" />" +
+    "</label>" +
+    "</div>" +
+    "</div>"
+  );
+}
+
+function ratePaper(paperId, rawScore) {
+  const nextScore = normalizeScore(rawScore);
+  if (nextScore === null) {
+    return;
+  }
+  const previousScore = hasRating(paperId) ? Number(state.ratings[paperId]) : null;
+  state.ratings[paperId] = nextScore;
+  applyLocalRatingToGlobal(paperId, nextScore, previousScore);
+  saveRatings();
+  submitSharedRating(paperId, nextScore);
+  renderPapers();
+}
+
+function bindRatingControls() {
+  els.paperList.querySelectorAll(".rating-button").forEach((button) => {
+    button.addEventListener("click", () => {
+      ratePaper(button.dataset.paperId, button.dataset.score);
+    });
+  });
+  els.paperList.querySelectorAll(".rating-input").forEach((input) => {
+    input.addEventListener("change", () => {
+      ratePaper(input.dataset.paperId, input.value);
+    });
+    input.addEventListener("keydown", (event) => {
+      if (event.key === "Enter") {
+        input.blur();
+      }
+    });
   });
 }
 
@@ -252,6 +481,7 @@ function renderPapers() {
           <p><strong>作者：</strong>${paper.authors.join("、")}</p>
           <p><strong>机构：</strong>${institutionText}</p>
           <p><strong>摘要：</strong>${paper.abstract}</p>
+          ${renderRatingControls(paper)}
           <div class="paper-actions">
             ${paper.links.paper ? `<a class="primary" href="${paper.links.paper}" target="_blank" rel="noreferrer">论文链接</a>` : ""}
             ${paper.links.dblp ? `<a href="${paper.links.dblp}" target="_blank" rel="noreferrer">DBLP 记录</a>` : ""}
@@ -261,6 +491,7 @@ function renderPapers() {
       `;
     })
     .join("");
+  bindRatingControls();
   renderPagination(items.length, pageCount, start, pageItems.length);
 }
 
