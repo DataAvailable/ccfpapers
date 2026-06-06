@@ -1,8 +1,8 @@
 {
-  "version": "2022-v6.1",
-  "updatedAt": "2026-06-03",
-  "source": "https://ccf.atom.im/v6.1/",
-  "notes": "CCF 2022 第六版目录的更名修订版，页面说明为 2024-06-28 修订。本文件仅保留 A 类会议和期刊。",
+  "version": "2026-v7",
+  "updatedAt": "2026-06-05",
+  "source": "https://ccf.atom.im/v7/",
+  "notes": "CCF 2026 第七版目录，页面说明为 2026 年 3 月中国计算机学会通过。本文件仅保留 A 类会议和期刊。",
   "directions": [
     {
       "id": "architecture-systems-storage",
@@ -16,8 +16,9 @@
         {"id": "sc", "shortName": "SC", "fullName": "International Conference for High Performance Computing, Networking, Storage, and Analysis", "type": "conference", "dblpKey": "conf/sc", "dblpUrl": "https://dblp.org/db/conf/sc/"},
         {"id": "asplos", "shortName": "ASPLOS", "fullName": "International Conference on Architectural Support for Programming Languages and Operating Systems", "type": "conference", "dblpKey": "conf/asplos", "dblpUrl": "https://dblp.org/db/conf/asplos/"},
         {"id": "isca", "shortName": "ISCA", "fullName": "International Symposium on Computer Architecture", "type": "conference", "dblpKey": "conf/isca", "dblpUrl": "https://dblp.org/db/conf/isca/"},
-        {"id": "usenix-atc", "shortName": "USENIX ATC", "fullName": "USENIX Annual Technical Conference", "type": "conference", "dblpKey": "conf/usenix", "dblpUrl": "https://dblp.org/db/conf/usenix/"},
+        {"id": "usenix-atc", "shortName": "ACM SIGOPS ATC", "fullName": "ACM SIGOPS Annual Technical Conference", "type": "conference", "dblpKey": "conf/usenix", "dblpUrl": "https://dblp.org/db/conf/usenix/"},
         {"id": "eurosys", "shortName": "EuroSys", "fullName": "European Conference on Computer Systems", "type": "conference", "dblpKey": "conf/eurosys", "dblpUrl": "https://dblp.org/db/conf/eurosys/"},
+        {"id": "hpdc", "shortName": "HPDC", "fullName": "The International ACM Symposium on High-Performance Parallel and Distributed Computing", "type": "conference", "dblpKey": "conf/hpdc", "dblpUrl": "https://dblp.org/db/conf/hpdc/"},
         {"id": "tocs", "shortName": "TOCS", "fullName": "ACM Transactions on Computer Systems", "type": "journal", "dblpKey": "journals/tocs", "dblpUrl": "https://dblp.org/db/journals/tocs/"},
         {"id": "tos", "shortName": "TOS", "fullName": "ACM Transactions on Storage", "type": "journal", "dblpKey": "journals/tos", "dblpUrl": "https://dblp.org/db/journals/tos/"},
         {"id": "tcad", "shortName": "TCAD", "fullName": "IEEE Transactions on Computer-Aided Design of Integrated Circuits and Systems", "type": "journal", "dblpKey": "journals/tcad", "dblpUrl": "https://dblp.org/db/journals/tcad/"},
@@ -33,7 +34,7 @@
         {"id": "sigcomm", "shortName": "SIGCOMM", "fullName": "ACM International Conference on Applications, Technologies, Architectures, and Protocols for Computer Communication", "type": "conference", "dblpKey": "conf/sigcomm", "dblpUrl": "https://dblp.org/db/conf/sigcomm/"},
         {"id": "mobicom", "shortName": "MobiCom", "fullName": "ACM International Conference on Mobile Computing and Networking", "type": "conference", "dblpKey": "conf/mobicom", "dblpUrl": "https://dblp.org/db/conf/mobicom/"},
         {"id": "infocom", "shortName": "INFOCOM", "fullName": "IEEE International Conference on Computer Communications", "type": "conference", "dblpKey": "conf/infocom", "dblpUrl": "https://dblp.org/db/conf/infocom/"},
-        {"id": "nsdi", "shortName": "NSDI", "fullName": "Symposium on Networked Systems Design and Implementation", "type": "conference", "dblpKey": "conf/nsdi", "dblpUrl": "https://dblp.org/db/conf/nsdi/"},
+        {"id": "nsdi", "shortName": "NSDI", "fullName": "Symposium on Network System Design and Implementation", "type": "conference", "dblpKey": "conf/nsdi", "dblpUrl": "https://dblp.org/db/conf/nsdi/"},
         {"id": "jsac", "shortName": "JSAC", "fullName": "IEEE Journal on Selected Areas in Communications", "type": "journal", "dblpKey": "journals/jsac", "dblpUrl": "https://dblp.org/db/journals/jsac/"},
         {"id": "tmc", "shortName": "TMC", "fullName": "IEEE Transactions on Mobile Computing", "type": "journal", "dblpKey": "journals/tmc", "dblpUrl": "https://dblp.org/db/journals/tmc/"},
         {"id": "ton", "shortName": "TON", "fullName": "IEEE/ACM Transactions on Networking", "type": "journal", "dblpKey": "journals/ton", "dblpUrl": "https://dblp.org/db/journals/ton/"}
@@ -109,11 +110,12 @@
       "venues": [
         {"id": "acmmm", "shortName": "ACM MM", "fullName": "ACM International Conference on Multimedia", "type": "conference", "dblpKey": "conf/mm", "dblpUrl": "https://dblp.org/db/conf/mm/"},
         {"id": "siggraph", "shortName": "SIGGRAPH", "fullName": "ACM Special Interest Group on Computer Graphics", "type": "conference", "dblpKey": "conf/siggraph", "dblpUrl": "https://dblp.org/db/conf/siggraph/"},
-        {"id": "vr", "shortName": "VR", "fullName": "IEEE Virtual Reality", "type": "conference", "dblpKey": "conf/vr", "dblpUrl": "https://dblp.org/db/conf/vr/"},
+        {"id": "vr", "shortName": "VR", "fullName": "IEEE Conference on Virtual Reality and 3D User Interfaces", "type": "conference", "dblpKey": "conf/vr", "dblpUrl": "https://dblp.org/db/conf/vr/"},
         {"id": "vis", "shortName": "IEEE VIS", "fullName": "IEEE Visualization Conference", "type": "conference", "dblpKey": "conf/visualization", "dblpUrl": "https://dblp.org/db/conf/visualization/"},
         {"id": "tog", "shortName": "TOG", "fullName": "ACM Transactions on Graphics", "type": "journal", "dblpKey": "journals/tog", "dblpUrl": "https://dblp.org/db/journals/tog/"},
         {"id": "tip", "shortName": "TIP", "fullName": "IEEE Transactions on Image Processing", "type": "journal", "dblpKey": "journals/tip", "dblpUrl": "https://dblp.org/db/journals/tip/"},
-        {"id": "tvcg", "shortName": "TVCG", "fullName": "IEEE Transactions on Visualization and Computer Graphics", "type": "journal", "dblpKey": "journals/tvcg", "dblpUrl": "https://dblp.org/db/journals/tvcg/"}
+        {"id": "tvcg", "shortName": "TVCG", "fullName": "IEEE Transactions on Visualization and Computer Graphics", "type": "journal", "dblpKey": "journals/tvcg", "dblpUrl": "https://dblp.org/db/journals/tvcg/"},
+        {"id": "tmm", "shortName": "TMM", "fullName": "IEEE Transactions on Multimedia", "type": "journal", "dblpKey": "journals/tmm", "dblpUrl": "https://dblp.org/db/journals/tmm/"}
       ]
     },
     {
@@ -126,7 +128,7 @@
         {"id": "cvpr", "shortName": "CVPR", "fullName": "IEEE/CVF Computer Vision and Pattern Recognition Conference", "type": "conference", "dblpKey": "conf/cvpr", "dblpUrl": "https://dblp.org/db/conf/cvpr/"},
         {"id": "iccv", "shortName": "ICCV", "fullName": "International Conference on Computer Vision", "type": "conference", "dblpKey": "conf/iccv", "dblpUrl": "https://dblp.org/db/conf/iccv/"},
         {"id": "icml", "shortName": "ICML", "fullName": "International Conference on Machine Learning", "type": "conference", "dblpKey": "conf/icml", "dblpUrl": "https://dblp.org/db/conf/icml/"},
-        {"id": "ijcai", "shortName": "IJCAI", "fullName": "International Joint Conference on Artificial Intelligence", "type": "conference", "dblpKey": "conf/ijcai", "dblpUrl": "https://dblp.org/db/conf/ijcai/"},
+        {"id": "iclr", "shortName": "ICLR", "fullName": "International Conference on Learning Representations", "type": "conference", "dblpKey": "conf/iclr", "dblpUrl": "https://dblp.org/db/conf/iclr/"},
         {"id": "ai-journal", "shortName": "AI", "fullName": "Artificial Intelligence", "type": "journal", "dblpKey": "journals/ai", "dblpUrl": "https://dblp.org/db/journals/ai/"},
         {"id": "tpami", "shortName": "TPAMI", "fullName": "IEEE Transactions on Pattern Analysis and Machine Intelligence", "type": "journal", "dblpKey": "journals/pami", "dblpUrl": "https://dblp.org/db/journals/pami/"},
         {"id": "ijcv", "shortName": "IJCV", "fullName": "International Journal of Computer Vision", "type": "journal", "dblpKey": "journals/ijcv", "dblpUrl": "https://dblp.org/db/journals/ijcv/"},
@@ -139,7 +141,7 @@
       "venues": [
         {"id": "cscw", "shortName": "CSCW", "fullName": "ACM Conference on Computer Supported Cooperative Work and Social Computing", "type": "conference", "dblpKey": "conf/cscw", "dblpUrl": "https://dblp.org/db/conf/cscw/"},
         {"id": "chi", "shortName": "CHI", "fullName": "ACM Conference on Human Factors in Computing Systems", "type": "conference", "dblpKey": "conf/chi", "dblpUrl": "https://dblp.org/db/conf/chi/"},
-        {"id": "ubicomp-imwut", "shortName": "UbiComp/IMWUT", "fullName": "ACM International Joint Conference on Pervasive and Ubiquitous Computing / IMWUT", "type": "conference", "dblpKey": "conf/huc", "dblpUrl": "https://dblp.org/db/conf/huc/"},
+        {"id": "ubicomp", "shortName": "UbiComp", "fullName": "ACM International Joint Conference on Pervasive and Ubiquitous Computing", "type": "conference", "dblpKey": "conf/huc", "dblpUrl": "https://dblp.org/db/conf/huc/"},
         {"id": "uist", "shortName": "UIST", "fullName": "ACM Symposium on User Interface Software and Technology", "type": "conference", "dblpKey": "conf/uist", "dblpUrl": "https://dblp.org/db/conf/uist/"},
         {"id": "tochi", "shortName": "TOCHI", "fullName": "ACM Transactions on Computer-Human Interaction", "type": "journal", "dblpKey": "journals/tochi", "dblpUrl": "https://dblp.org/db/journals/tochi/"},
         {"id": "ijhcs", "shortName": "IJHCS", "fullName": "International Journal of Human-Computer Studies", "type": "journal", "dblpKey": "journals/ijmms", "dblpUrl": "https://dblp.org/db/journals/ijmms/"}
@@ -151,10 +153,10 @@
       "venues": [
         {"id": "www", "shortName": "WWW", "fullName": "International World Wide Web Conference", "type": "conference", "dblpKey": "conf/www", "dblpUrl": "https://dblp.org/db/conf/www/"},
         {"id": "rtss", "shortName": "RTSS", "fullName": "IEEE Real-Time Systems Symposium", "type": "conference", "dblpKey": "conf/rtss", "dblpUrl": "https://dblp.org/db/conf/rtss/"},
-        {"id": "wine", "shortName": "WINE", "fullName": "Conference on Web and Internet Economics", "type": "conference", "dblpKey": "conf/wine", "dblpUrl": "https://dblp.org/db/conf/wine/"},
         {"id": "jacm", "shortName": "JACM", "fullName": "Journal of the ACM", "type": "journal", "dblpKey": "journals/jacm", "dblpUrl": "https://dblp.org/db/journals/jacm/"},
         {"id": "proc-ieee", "shortName": "Proc. IEEE", "fullName": "Proceedings of the IEEE", "type": "journal", "dblpKey": "journals/pieee", "dblpUrl": "https://dblp.org/db/journals/pieee/"},
-        {"id": "scis", "shortName": "SCIS", "fullName": "Science China Information Sciences", "type": "journal", "dblpKey": "journals/chinaf", "dblpUrl": "https://dblp.org/db/journals/chinaf/"}
+        {"id": "scis", "shortName": "SCIS", "fullName": "Science China Information Sciences", "type": "journal", "dblpKey": "journals/chinaf", "dblpUrl": "https://dblp.org/db/journals/chinaf/"},
+        {"id": "bioinformatics", "shortName": "Bioinformatics", "fullName": "Bioinformatics", "type": "journal", "dblpKey": "journals/bioinformatics", "dblpUrl": "https://dblp.org/db/journals/bioinformatics/"}
       ]
     }
   ]

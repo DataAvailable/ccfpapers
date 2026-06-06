@@ -35,17 +35,45 @@ def flatten_venues(catalog: dict) -> list[dict]:
     return rows
 
 
-def dblp_search(short_name: str, year: int, limit: int) -> list[dict]:
-    query = f'venue:"{short_name}" year:{year}'
-    params = urllib.parse.urlencode({"q": query, "format": "json", "h": str(limit)})
-    url = f"https://dblp.org/search/publ/api?{params}"
-    with urllib.request.urlopen(url, timeout=30) as response:
-        payload = json.loads(response.read().decode("utf-8"))
-
-    hits = payload.get("result", {}).get("hits", {}).get("hit", [])
+def normalize_hits(hits: object) -> list[dict]:
     if isinstance(hits, dict):
-        hits = [hits]
-    return [hit.get("info", {}) for hit in hits]
+        return [hits]
+    if isinstance(hits, list):
+        return hits
+    return []
+
+
+def dblp_search(dblp_key: str, year: int, limit: int) -> list[dict]:
+    query = f"stream:{dblp_key}: year:{year}"
+    page_size = min(max(limit, 1), 100)
+    first = 0
+    results: list[dict] = []
+
+    while len(results) < limit:
+        params = urllib.parse.urlencode({
+            "q": query,
+            "format": "json",
+            "h": str(min(page_size, limit - len(results))),
+            "f": str(first),
+        })
+        url = f"https://dblp.org/search/publ/api?{params}"
+        with urllib.request.urlopen(url, timeout=30) as response:
+            payload = json.loads(response.read().decode("utf-8"))
+
+        hits_payload = payload.get("result", {}).get("hits", {})
+        hits = normalize_hits(hits_payload.get("hit", []))
+        if not hits:
+            break
+
+        results.extend(hit.get("info", {}) for hit in hits)
+        sent = int(hits_payload.get("@sent", len(hits)) or 0)
+        total = int(hits_payload.get("@total", first + sent) or 0)
+        first += sent
+        if sent == 0 or first >= total:
+            break
+        time.sleep(0.1)
+
+    return results
 
 
 def normalize_authors(authors: object) -> list[str]:
@@ -116,7 +144,7 @@ def main() -> int:
     for index, venue in enumerate(venues, start=1):
         print(f"[{index}/{len(venues)}] Fetching {venue['shortName']} {args.year}", file=sys.stderr)
         try:
-            for info in dblp_search(venue["shortName"], args.year, args.limit):
+            for info in dblp_search(venue["dblpKey"], args.year, args.limit):
                 record = record_from_info(info, venue, args.year)
                 if record["title"]:
                     by_id[record["id"]] = {**by_id.get(record["id"], {}), **record}
