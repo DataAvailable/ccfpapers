@@ -34,12 +34,12 @@ async function loadJson(path) {
 
 async function boot() {
   try {
-    const [catalog, papers2025] = await Promise.all([
+    const [catalog, ...paperYears] = await Promise.all([
       loadJson("data/ccf-a-venues.json"),
-      loadJson("data/papers/2025.json"),
+      ...[2023, 2024, 2025, 2026].map((year) => loadJson("data/papers/" + year + ".json")),
     ]);
     state.catalog = catalog;
-    state.papers = papers2025.papers;
+    state.papers = paperYears.flatMap((payload) => payload.papers);
     hydrateFilters();
     bindEvents();
     render();

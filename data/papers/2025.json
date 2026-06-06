@@ -1,28 +1,20 @@
 {
   "year": 2025,
-  "generatedAt": "2026-06-03",
-  "source": "DBLP page snippets and manual seed records for the first UI version.",
+  "generatedAt": "2026-06-05",
+  "source": "DBLP search API",
   "papers": [
-    {
-      "id": "ccs-2025-scherer-wanilla",
-      "venueId": "ccs",
-      "year": 2025,
-      "title": "Wanilla: Sound Noninterference Analysis for WebAssembly",
-      "authors": ["Markus Scherer", "Jeppe Fredsgaard Blaabjerg", "Alexander Sjösten", "Matteo Maffei"],
-      "institutions": [],
-      "abstract": "DBLP 原生记录不包含摘要；该字段等待后续通过 OpenAlex、Semantic Scholar 或出版商页面补全。",
-      "links": {
-        "dblp": "https://dblp.org/rec/conf/ccs/SchererBSM25",
-        "paper": ""
-      },
-      "metadataStatus": "dblp"
-    },
     {
       "id": "ccs-2025-barbosa-lattice",
       "venueId": "ccs",
       "year": 2025,
       "title": "Formally Verified Correctness Bounds for Lattice-Based Cryptography",
-      "authors": ["Manuel Barbosa", "Matthias J. Kannwischer", "Thing-Han Lim", "Peter Schwabe", "Pierre-Yves Strub"],
+      "authors": [
+        "Manuel Barbosa",
+        "Matthias J. Kannwischer",
+        "Thing-Han Lim",
+        "Peter Schwabe",
+        "Pierre-Yves Strub"
+      ],
       "institutions": [],
       "abstract": "DBLP 原生记录不包含摘要；该字段等待后续通过 OpenAlex、Semantic Scholar 或出版商页面补全。",
       "links": {
@@ -36,7 +28,13 @@
       "venueId": "ccs",
       "year": 2025,
       "title": "It Should Be Easy but... New Users' Experiences and Challenges with Secret Management Tools",
-      "authors": ["Lorenzo Neil", "Deepthi Mungara", "Laurie A. Williams", "Yasemin Acar", "Bradley Reaves"],
+      "authors": [
+        "Lorenzo Neil",
+        "Deepthi Mungara",
+        "Laurie A. Williams",
+        "Yasemin Acar",
+        "Bradley Reaves"
+      ],
       "institutions": [],
       "abstract": "DBLP 原生记录不包含摘要；该字段等待后续通过 OpenAlex、Semantic Scholar 或出版商页面补全。",
       "links": {
@@ -46,11 +44,41 @@
       "metadataStatus": "dblp"
     },
     {
+      "id": "ccs-2025-scherer-wanilla",
+      "venueId": "ccs",
+      "year": 2025,
+      "title": "Wanilla: Sound Noninterference Analysis for WebAssembly",
+      "authors": [
+        "Markus Scherer",
+        "Jeppe Fredsgaard Blaabjerg",
+        "Alexander Sjösten",
+        "Matteo Maffei"
+      ],
+      "institutions": [],
+      "abstract": "DBLP 原生记录不包含摘要；该字段等待后续通过 OpenAlex、Semantic Scholar 或出版商页面补全。",
+      "links": {
+        "dblp": "https://dblp.org/rec/conf/ccs/SchererBSM25",
+        "paper": ""
+      },
+      "metadataStatus": "dblp"
+    },
+    {
       "id": "uss-2025-activation-approximations",
       "venueId": "usenix-security",
       "year": 2025,
       "title": "Activation Approximations Can Incur Safety Vulnerabilities in Aligned LLMs: Comprehensive Analysis and Defense",
-      "authors": ["Jiawen Zhang", "Kejia Chen", "Lipeng He", "Jian Lou", "Dan Li", "Zunlei Feng", "Mingli Song", "Jian Liu", "Kui Ren", "Xiaohu Yang"],
+      "authors": [
+        "Jiawen Zhang",
+        "Kejia Chen",
+        "Lipeng He",
+        "Jian Lou",
+        "Dan Li",
+        "Zunlei Feng",
+        "Mingli Song",
+        "Jian Liu",
+        "Kui Ren",
+        "Xiaohu Yang"
+      ],
       "institutions": [],
       "abstract": "DBLP 原生记录不包含摘要；该字段等待后续通过 OpenAlex、Semantic Scholar 或出版商页面补全。",
       "links": {
@@ -64,7 +92,9 @@
       "venueId": "usenix-security",
       "year": 2025,
       "title": "DP-BREM: Differentially-Private and Byzantine-Robust Federated Learning with Client Momentum",
-      "authors": ["DBLP author list pending import"],
+      "authors": [
+        "DBLP author list pending import"
+      ],
       "institutions": [],
       "abstract": "DBLP 原生记录不包含摘要；该字段等待后续通过 OpenAlex、Semantic Scholar 或出版商页面补全。",
       "links": {
