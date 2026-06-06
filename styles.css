@@ -346,6 +346,61 @@ select {
   margin-top: 20px;
 }
 
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-top: 20px;
+  padding-top: 18px;
+  border-top: 1px solid var(--line);
+}
+
+.pagination-summary {
+  color: var(--muted);
+  font-size: 14px;
+}
+
+.pagination-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.page-button {
+  min-width: 38px;
+  min-height: 36px;
+  padding: 0 12px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: #fff;
+  color: var(--ink);
+  font: inherit;
+  font-size: 13px;
+  font-weight: 720;
+  cursor: pointer;
+}
+
+.page-button:hover:not(:disabled),
+.page-button.active {
+  border-color: rgba(15, 124, 116, 0.42);
+  background: #e6f3ef;
+  color: var(--teal-dark);
+}
+
+.page-button:disabled {
+  color: var(--muted);
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+
+.page-gap {
+  color: var(--muted);
+  font-size: 13px;
+}
+
 .paper-card {
   padding: 20px;
   border: 1px solid var(--line);
@@ -486,6 +541,15 @@ footer {
   .paper-section,
   .direction-rail {
     padding: 18px;
+  }
+
+  .pagination {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .pagination-controls {
+    justify-content: flex-start;
   }
 
   main {

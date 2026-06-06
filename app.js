@@ -5,6 +5,8 @@ const state = {
   type: "all",
   status: "all",
   query: "",
+  page: 1,
+  pageSize: 50,
   catalog: null,
   papers: [],
 };
@@ -13,6 +15,7 @@ const els = {
   directionList: document.querySelector("#direction-list"),
   venueGrid: document.querySelector("#venue-grid"),
   paperList: document.querySelector("#paper-list"),
+  paperPagination: document.querySelector("#paper-pagination"),
   directionTitle: document.querySelector("#direction-title"),
   venueSummary: document.querySelector("#venue-summary"),
   query: document.querySelector("#query"),
@@ -64,19 +67,23 @@ function hydrateFilters() {
 function bindEvents() {
   els.query.addEventListener("input", (event) => {
     state.query = event.target.value.trim().toLowerCase();
+    state.page = 1;
     renderPapers();
   });
   els.year.addEventListener("change", (event) => {
     state.year = event.target.value;
+    state.page = 1;
     renderPapers();
   });
   els.type.addEventListener("change", (event) => {
     state.type = event.target.value;
     state.venue = "all";
+    state.page = 1;
     render();
   });
   els.status.addEventListener("change", (event) => {
     state.status = event.target.value;
+    state.page = 1;
     renderPapers();
   });
 }
@@ -138,6 +145,7 @@ function renderDirections() {
     button.addEventListener("click", () => {
       state.direction = button.dataset.direction;
       state.venue = "all";
+      state.page = 1;
       render();
     });
   });
@@ -169,6 +177,7 @@ function renderVenues() {
   els.venueGrid.querySelectorAll(".venue-card").forEach((card) => {
     card.addEventListener("click", () => {
       state.venue = state.venue === card.dataset.venue ? "all" : card.dataset.venue;
+      state.page = 1;
       renderVenues();
       renderPapers();
     });
@@ -217,10 +226,16 @@ function renderPapers() {
         暂无匹配论文。可以换一个方向、年份或关键词；也可以运行脚本导入更多 DBLP 数据。
       </div>
     `;
+    els.paperPagination.innerHTML = "";
     return;
   }
 
-  els.paperList.innerHTML = items
+  const pageCount = Math.ceil(items.length / state.pageSize);
+  state.page = Math.min(Math.max(state.page, 1), pageCount);
+  const start = (state.page - 1) * state.pageSize;
+  const pageItems = items.slice(start, start + state.pageSize);
+
+  els.paperList.innerHTML = pageItems
     .map((paper) => {
       const venue = venueMap.get(paper.venueId);
       const institutionText = paper.institutions.length
@@ -246,6 +261,73 @@ function renderPapers() {
       `;
     })
     .join("");
+  renderPagination(items.length, pageCount, start, pageItems.length);
+}
+
+function paginationPages(page, pageCount) {
+  const pages = new Set([1, pageCount]);
+  for (let value = page - 2; value <= page + 2; value += 1) {
+    if (value > 1 && value < pageCount) {
+      pages.add(value);
+    }
+  }
+  return [...pages].sort((a, b) => a - b);
+}
+
+function renderPagination(total, pageCount, start, visibleCount) {
+  const end = start + visibleCount;
+  const pages = paginationPages(state.page, pageCount);
+  let previousPage = 0;
+  const pageButtons = pages
+    .map((page) => {
+      const gap = previousPage && page - previousPage > 1 ? "<span class=\"page-gap\">...</span>" : "";
+      previousPage = page;
+      const activeClass = state.page === page ? " active" : "";
+      return (
+        gap +
+        "<button class=\"page-button" +
+        activeClass +
+        "\" data-page=\"" +
+        page +
+        "\">" +
+        page +
+        "</button>"
+      );
+    })
+    .join("");
+
+  els.paperPagination.innerHTML =
+    "<div class=\"pagination-summary\">第 " +
+    (start + 1) +
+    "-" +
+    end +
+    " 篇，共 " +
+    total +
+    " 篇</div>" +
+    "<div class=\"pagination-controls\">" +
+    "<button class=\"page-button\" data-page=\"" +
+    (state.page - 1) +
+    "\" " +
+    (state.page === 1 ? "disabled" : "") +
+    ">上一页</button>" +
+    pageButtons +
+    "<button class=\"page-button\" data-page=\"" +
+    (state.page + 1) +
+    "\" " +
+    (state.page === pageCount ? "disabled" : "") +
+    ">下一页</button>" +
+    "</div>";
+
+  els.paperPagination.querySelectorAll("button[data-page]").forEach((button) => {
+    button.addEventListener("click", () => {
+      const nextPage = Number(button.dataset.page);
+      if (!Number.isNaN(nextPage) && nextPage !== state.page) {
+        state.page = nextPage;
+        renderPapers();
+        document.querySelector("#papers").scrollIntoView({ behavior: "smooth", block: "start" });
+      }
+    });
+  });
 }
 
 function statusText(status) {
